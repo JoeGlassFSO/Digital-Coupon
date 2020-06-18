@@ -2,11 +2,12 @@
 //  AppDelegate.swift
 //  Digital Coupon
 //
-//  Created by Mac on 18/06/2020.
-//  Copyright © 2020 Mac. All rights reserved.
+//  Created by Joe Glass on 5/29/20.
+//  Copyright © 2020 Joe Glass. All rights reserved.
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
         return true
     }
 

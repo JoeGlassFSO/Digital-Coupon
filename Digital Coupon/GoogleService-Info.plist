@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>733108030183-f11rmnr2hkhjrep67d8afo2i0k2g9ul6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.733108030183-f11rmnr2hkhjrep67d8afo2i0k2g9ul6</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCz6Qx3I8FY73HZ18bAOkjEmryvm1-ohqI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>733108030183</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.app.Digital-Coupon</string>
+	<key>PROJECT_ID</key>
+	<string>digital-coupon-90830</string>
+	<key>STORAGE_BUCKET</key>
+	<string>digital-coupon-90830.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:733108030183:ios:0b53c92a11b70edbe57042</string>
+	<key>DATABASE_URL</key>
+	<string>https://digital-coupon-90830.firebaseio.com</string>
+</dict>
+</plist>

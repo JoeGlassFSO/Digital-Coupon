@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,17 @@
 		0471C734249B549E0012ED7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0471C733249B549E0012ED7F /* Assets.xcassets */; };
 		0471C737249B549E0012ED7F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0471C736249B549E0012ED7F /* Preview Assets.xcassets */; };
 		0471C73A249B549E0012ED7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0471C738249B549E0012ED7F /* LaunchScreen.storyboard */; };
+		0471C742249B8F180012ED7F /* FirebaseSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C741249B8F180012ED7F /* FirebaseSession.swift */; };
+		0471C744249B8FD00012ED7F /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C743249B8FD00012ED7F /* ActivityIndicator.swift */; };
+		0471C746249BA05B0012ED7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0471C745249BA05B0012ED7F /* GoogleService-Info.plist */; };
+		0471C748249BE65B0012ED7F /* MerchantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C747249BE65B0012ED7F /* MerchantsView.swift */; };
+		0471C74A249BE6F60012ED7F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C749249BE6F60012ED7F /* LoadingView.swift */; };
+		0471C74C249BE8020012ED7F /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C74B249BE8020012ED7F /* Merchant.swift */; };
+		0471C750249BE8DE0012ED7F /* ListingDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C74E249BE8DE0012ED7F /* ListingDetail.swift */; };
+		0471C752249BEF9E0012ED7F /* SnapshotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C751249BEF9E0012ED7F /* SnapshotExtension.swift */; };
+		0471C754249BFE330012ED7F /* ListingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C753249BFE330012ED7F /* ListingItem.swift */; };
+		04FF944F249C1A4600D56B96 /* RedeemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF944E249C1A4500D56B96 /* RedeemView.swift */; };
+		8319858B992C8734D9F3AEE4 /* Pods_Digital_Coupon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80DB2D27DEF42331824F717A /* Pods_Digital_Coupon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +35,19 @@
 		0471C736249B549E0012ED7F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0471C739249B549E0012ED7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0471C73B249B549E0012ED7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0471C741249B8F180012ED7F /* FirebaseSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseSession.swift; sourceTree = "<group>"; };
+		0471C743249B8FD00012ED7F /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		0471C745249BA05B0012ED7F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0471C747249BE65B0012ED7F /* MerchantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantsView.swift; sourceTree = "<group>"; };
+		0471C749249BE6F60012ED7F /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		0471C74B249BE8020012ED7F /* Merchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		0471C74E249BE8DE0012ED7F /* ListingDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetail.swift; sourceTree = "<group>"; };
+		0471C751249BEF9E0012ED7F /* SnapshotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotExtension.swift; sourceTree = "<group>"; };
+		0471C753249BFE330012ED7F /* ListingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingItem.swift; sourceTree = "<group>"; };
+		04FF944E249C1A4500D56B96 /* RedeemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemView.swift; sourceTree = "<group>"; };
+		80DB2D27DEF42331824F717A /* Pods_Digital_Coupon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Digital_Coupon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F911DBC112D04A6CB811434C /* Pods-Digital Coupon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Digital Coupon.release.xcconfig"; path = "Target Support Files/Pods-Digital Coupon/Pods-Digital Coupon.release.xcconfig"; sourceTree = "<group>"; };
+		F9EE39104F5004AF8F003CFB /* Pods-Digital Coupon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Digital Coupon.debug.xcconfig"; path = "Target Support Files/Pods-Digital Coupon/Pods-Digital Coupon.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8319858B992C8734D9F3AEE4 /* Pods_Digital_Coupon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +67,8 @@
 			children = (
 				0471C72C249B549D0012ED7F /* Digital Coupon */,
 				0471C72B249B549D0012ED7F /* Products */,
+				1C6E4B8E5AB23AC52D74695A /* Pods */,
+				C4D40C659FD3D2E94D4D51FE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,10 +85,20 @@
 			children = (
 				0471C72D249B549D0012ED7F /* AppDelegate.swift */,
 				0471C72F249B549D0012ED7F /* SceneDelegate.swift */,
+				0471C747249BE65B0012ED7F /* MerchantsView.swift */,
 				0471C731249B549D0012ED7F /* ContentView.swift */,
+				0471C74B249BE8020012ED7F /* Merchant.swift */,
 				0471C733249B549E0012ED7F /* Assets.xcassets */,
 				0471C738249B549E0012ED7F /* LaunchScreen.storyboard */,
+				0471C749249BE6F60012ED7F /* LoadingView.swift */,
+				04FF944E249C1A4500D56B96 /* RedeemView.swift */,
+				0471C74E249BE8DE0012ED7F /* ListingDetail.swift */,
+				0471C751249BEF9E0012ED7F /* SnapshotExtension.swift */,
+				0471C753249BFE330012ED7F /* ListingItem.swift */,
+				0471C741249B8F180012ED7F /* FirebaseSession.swift */,
+				0471C743249B8FD00012ED7F /* ActivityIndicator.swift */,
 				0471C73B249B549E0012ED7F /* Info.plist */,
+				0471C745249BA05B0012ED7F /* GoogleService-Info.plist */,
 				0471C735249B549E0012ED7F /* Preview Content */,
 			);
 			path = "Digital Coupon";
@@ -75,6 +112,23 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		1C6E4B8E5AB23AC52D74695A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F9EE39104F5004AF8F003CFB /* Pods-Digital Coupon.debug.xcconfig */,
+				F911DBC112D04A6CB811434C /* Pods-Digital Coupon.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C4D40C659FD3D2E94D4D51FE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				80DB2D27DEF42331824F717A /* Pods_Digital_Coupon.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -82,9 +136,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0471C73E249B549E0012ED7F /* Build configuration list for PBXNativeTarget "Digital Coupon" */;
 			buildPhases = (
+				D1EF45E6A03EC4B63CF8DA35 /* [CP] Check Pods Manifest.lock */,
 				0471C726249B549D0012ED7F /* Sources */,
 				0471C727249B549D0012ED7F /* Frameworks */,
 				0471C728249B549D0012ED7F /* Resources */,
+				24087B541B649CD4EB559ED8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -134,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0471C73A249B549E0012ED7F /* LaunchScreen.storyboard in Resources */,
+				0471C746249BA05B0012ED7F /* GoogleService-Info.plist in Resources */,
 				0471C737249B549E0012ED7F /* Preview Assets.xcassets in Resources */,
 				0471C734249B549E0012ED7F /* Assets.xcassets in Resources */,
 			);
@@ -141,13 +198,64 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		24087B541B649CD4EB559ED8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Digital Coupon/Pods-Digital Coupon-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Digital Coupon/Pods-Digital Coupon-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Digital Coupon/Pods-Digital Coupon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D1EF45E6A03EC4B63CF8DA35 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Digital Coupon-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0471C726249B549D0012ED7F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FF944F249C1A4600D56B96 /* RedeemView.swift in Sources */,
 				0471C72E249B549D0012ED7F /* AppDelegate.swift in Sources */,
+				0471C744249B8FD00012ED7F /* ActivityIndicator.swift in Sources */,
+				0471C752249BEF9E0012ED7F /* SnapshotExtension.swift in Sources */,
+				0471C750249BE8DE0012ED7F /* ListingDetail.swift in Sources */,
+				0471C748249BE65B0012ED7F /* MerchantsView.swift in Sources */,
+				0471C74C249BE8020012ED7F /* Merchant.swift in Sources */,
+				0471C742249B8F180012ED7F /* FirebaseSession.swift in Sources */,
+				0471C754249BFE330012ED7F /* ListingItem.swift in Sources */,
 				0471C730249B549D0012ED7F /* SceneDelegate.swift in Sources */,
+				0471C74A249BE6F60012ED7F /* LoadingView.swift in Sources */,
 				0471C732249B549D0012ED7F /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +390,7 @@
 		};
 		0471C73F249B549E0012ED7F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9EE39104F5004AF8F003CFB /* Pods-Digital Coupon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -293,7 +402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Quintersol.Digital-Coupon";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.app.Digital-Coupon";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -302,6 +411,7 @@
 		};
 		0471C740249B549E0012ED7F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F911DBC112D04A6CB811434C /* Pods-Digital Coupon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -313,7 +423,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Quintersol.Digital-Coupon";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.app.Digital-Coupon";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
