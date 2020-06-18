@@ -1,9 +1,9 @@
 //
 //  ListingDetail.swift
-//  Houser
+//  Digital Coupon
 //
-//  Created by Mac on 07/11/2019.
-//  Copyright © 2019 Mac. All rights reserved.
+//  Created by Joe Glass on 5/29/20.
+//  Copyright © 2020 Joe Glass. All rights reserved.
 //
 
 import SwiftUI
@@ -27,13 +27,7 @@ struct ListingDetail: View {
                 VStack {
                     
                     Spacer()
-                    Image("")
-                        .resizable()
-                        .clipShape(Rectangle())
-                        .background(Color.white)
-                        .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.blue, lineWidth: 1))
-                        .frame(width: frameSize, height: frameSize)
-                        .padding()
+                    RemoteImageView(withURL: merchant.image)
                 }
                 
                 Spacer()

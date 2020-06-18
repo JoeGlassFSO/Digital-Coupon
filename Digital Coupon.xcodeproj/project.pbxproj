@@ -23,6 +23,7 @@
 		0471C752249BEF9E0012ED7F /* SnapshotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C751249BEF9E0012ED7F /* SnapshotExtension.swift */; };
 		0471C754249BFE330012ED7F /* ListingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C753249BFE330012ED7F /* ListingItem.swift */; };
 		04FF944F249C1A4600D56B96 /* RedeemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF944E249C1A4500D56B96 /* RedeemView.swift */; };
+		04FF9451249C2E2900D56B96 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF9450249C2E2900D56B96 /* RemoteImageView.swift */; };
 		8319858B992C8734D9F3AEE4 /* Pods_Digital_Coupon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80DB2D27DEF42331824F717A /* Pods_Digital_Coupon.framework */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		0471C751249BEF9E0012ED7F /* SnapshotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotExtension.swift; sourceTree = "<group>"; };
 		0471C753249BFE330012ED7F /* ListingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingItem.swift; sourceTree = "<group>"; };
 		04FF944E249C1A4500D56B96 /* RedeemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemView.swift; sourceTree = "<group>"; };
+		04FF9450249C2E2900D56B96 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 		80DB2D27DEF42331824F717A /* Pods_Digital_Coupon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Digital_Coupon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F911DBC112D04A6CB811434C /* Pods-Digital Coupon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Digital Coupon.release.xcconfig"; path = "Target Support Files/Pods-Digital Coupon/Pods-Digital Coupon.release.xcconfig"; sourceTree = "<group>"; };
 		F9EE39104F5004AF8F003CFB /* Pods-Digital Coupon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Digital Coupon.debug.xcconfig"; path = "Target Support Files/Pods-Digital Coupon/Pods-Digital Coupon.debug.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				0471C753249BFE330012ED7F /* ListingItem.swift */,
 				0471C741249B8F180012ED7F /* FirebaseSession.swift */,
 				0471C743249B8FD00012ED7F /* ActivityIndicator.swift */,
+				04FF9450249C2E2900D56B96 /* RemoteImageView.swift */,
 				0471C73B249B549E0012ED7F /* Info.plist */,
 				0471C745249BA05B0012ED7F /* GoogleService-Info.plist */,
 				0471C735249B549E0012ED7F /* Preview Content */,
@@ -250,6 +253,7 @@
 				0471C744249B8FD00012ED7F /* ActivityIndicator.swift in Sources */,
 				0471C752249BEF9E0012ED7F /* SnapshotExtension.swift in Sources */,
 				0471C750249BE8DE0012ED7F /* ListingDetail.swift in Sources */,
+				04FF9451249C2E2900D56B96 /* RemoteImageView.swift in Sources */,
 				0471C748249BE65B0012ED7F /* MerchantsView.swift in Sources */,
 				0471C74C249BE8020012ED7F /* Merchant.swift in Sources */,
 				0471C742249B8F180012ED7F /* FirebaseSession.swift in Sources */,

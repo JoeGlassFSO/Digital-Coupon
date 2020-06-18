@@ -2,8 +2,8 @@
 //  RedeemView.swift
 //  Digital Coupon
 //
-//  Created by Mac on 19/06/2020.
-//  Copyright © 2020 Mac. All rights reserved.
+//  Created by Joe Glass on 5/29/20.
+//  Copyright © 2020 Joe Glass. All rights reserved.
 //
 
 import SwiftUI

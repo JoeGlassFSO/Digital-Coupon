@@ -1,9 +1,9 @@
 //
 //  SnapshotExtension.swift
-//  Houser
+//  Digital Coupon
 //
-//  Created by Mac on 09/11/2019.
-//  Copyright © 2019 Mac. All rights reserved.
+//  Created by Joe Glass on 5/29/20.
+//  Copyright © 2020 Joe Glass. All rights reserved.
 //
 
 import Foundation

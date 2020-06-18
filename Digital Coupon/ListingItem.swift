@@ -2,8 +2,8 @@
 //  ListingItem.swift
 //  Digital Coupon
 //
-//  Created by Mac on 18/06/2020.
-//  Copyright © 2020 Mac. All rights reserved.
+//  Created by Joe Glass on 5/29/20.
+//  Copyright © 2020 Joe Glass. All rights reserved.
 //
 
 import SwiftUI
@@ -26,13 +26,7 @@ struct ListingItem: View {
     var body: some View {
         
             HStack {
-                Image("")
-                    .resizable()
-                    .clipShape(Rectangle())
-                    .overlay(Rectangle().stroke(Color.blue, lineWidth: 0.2))
-                    .shadow(radius: 10)
-                    .padding()
-                    .frame(width: frameSize, height: frameSize)
+                RemoteImageView(withURL: merchant.image)
                 
                 VStack(alignment: .leading){
                     
