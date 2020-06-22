@@ -16,7 +16,16 @@ struct MerchantsView: View {
     @State var merchants = [Merchant]()
     @State var upper: Int = 1000000
     @State var lower: Int = 0
+    @State var order: String = "offer"
+    @State var status: String = "all"
     @State var lastEncounteredIndex: Int = 0
+    @State var selection: Int? = nil
+    @State var filtered: Bool = false
+    
+    @State var selectedType: Int = 0
+    @State var selectedStatus: Int = 0
+    @State var selectedPrice: Int = 1
+    @State var cuisineName: String = ""
     
     var body: some View {
         LoadingView(isShowing: .constant(ans)) {
@@ -38,12 +47,61 @@ struct MerchantsView: View {
             .padding(.trailing, -14.0)
             .navigationBarTitle("Digital Coupon", displayMode: .inline)
             .onAppear(perform: self.fetch)
+            .navigationBarItems(leading:
+                NavigationLink(destination: ProileView(), tag: 0, selection: self.$selection) {
+                Button(action: {
+                withAnimation {
+                    self.selection = 0
+                }
+            }) {
+                Image(systemName: "line.horizontal.3")
+                    .foregroundColor(.blue)
+                }
+                }
+                , trailing:
+                NavigationLink(destination: SortView(selectedType: self.$selectedType, selectedStatus: self.$selectedStatus, selectedPrice: self.$selectedPrice, filtered: self.$filtered, cuisineName: self.$cuisineName), tag: 1, selection: self.$selection)  {
+                Button(action: {
+                    withAnimation {
+                        self.selection = 1
+                    }
+                }) {
+                    Image(systemName: "line.horizontal.3.decrease")
+                        .foregroundColor(.blue)
+                }
+                }
+            )
         }
     }
     
     func fetch(){
+        let by = ["offer", "rating"]
+        let openstatus = ["open", "closed"]
+        let prices = ["$", "$$", "$$$", "$$$$"]
         
-        session.getMerchants(from: "merchants", returning: Merchant.self, withUpper: upper, andLower: lower, loadingMore: false) { (merchants) in
+        if filtered{
+            order = by[selectedType]
+            status = openstatus[selectedStatus]
+            
+            switch prices[selectedPrice] {
+            case "$$$$":
+                upper = 99999
+                lower = 10000
+            case "$$$":
+                upper = 9999
+                lower = 1000
+            case "$$":
+                upper = 999
+                lower = 100
+            case "$":
+                upper = 99
+                lower = 0
+            default:
+                upper = 1000000
+                lower = 0
+            }
+        }
+        
+        session.getMerchants(from: "merchants", returning: Merchant.self, orderedBy: order, withUpper: upper, andLower: lower, andStatus: status, loadingMore: false, withCuisine: cuisineName) { (merchants) in
             self.merchants = merchants
             
             self.ans = false
@@ -60,7 +118,7 @@ struct MerchantsView: View {
         print("last encountered index \(lastEncounteredIndex)")
         print("")
         lastEncounteredIndex = encounteredIndex
-        session.getMerchants(from: "merchants", returning: Merchant.self, withUpper: upper, andLower: lower, loadingMore: true) { (merchants) in
+        session.getMerchants(from: "merchants", returning: Merchant.self, orderedBy: order, withUpper: upper, andLower: lower, andStatus: status, loadingMore: true, withCuisine: cuisineName) { (merchants) in
             
             self.merchants.append(contentsOf: merchants)
             self.ans = false

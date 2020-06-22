@@ -29,11 +29,85 @@ class FirebaseSession: ObservableObject{
         return auth.currentUser
         
     }
+    
+    func emailPassword(isLogin bool: Bool, withEmail email: String, andPassword password: String, andData docData: [String : Any]?, completion: @escaping (Bool) -> Void){
+        if bool {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard self != nil else { return }
+            if authResult?.user.uid != nil {
+            completion(true)
+            }else{
+                completion(false)
+            }
+        }
+        }else{
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                if let id = authResult?.user.uid{
+                    completion(true)
+                    self.createUser(withUID: id, andData: docData!)
+                }else{
+                    print(error!.localizedDescription)
+                    completion(false)
+                }
+            }
+        }
+    }
+    
+    func createUser(withUID uid: String, andData docData: [String : Any]){
+        db.collection("users").document(uid).setData(docData) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+    }
 
-    func getMerchants<T: Decodable>(from collectionReference: String, returning objectType: T.Type, withUpper upper: Int, andLower lower: Int, loadingMore boolean: Bool, completion: @escaping ([T]) -> Void) {
+    func getCuisines(from collectionReference: String, completion: @escaping ([String]) -> Void) {
 
         let firstRef = reference(to: collectionReference)
+        
+
+            //load the requested documents
+            firstRef.getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    do{
+                        var objects = [String]()
+                        for document in querySnapshot?.documents ?? [] {
+                            let object = (document.get("name") as! String)
+                            objects.append(object)
+                            
+                        }
+
+                        completion(objects)
+
+                        self.lastSnap = querySnapshot!.documents.last
+
+                    }catch{
+                        print(error)
+                    }
+                }
+            }
+
+    }
+
+    func getMerchants<T: Decodable>(from collectionReference: String, returning objectType: T.Type, orderedBy order: String, withUpper upper: Int, andLower lower: Int, andStatus status: String, loadingMore boolean: Bool, withCuisine cuisine: String, completion: @escaping ([T]) -> Void) {
+
+        let firstRef = reference(to: collectionReference)
+            .order(by: order, descending: true)
             .limit(to: 9)
+        
+        let date = Date()
+        var calendar = Calendar.current
+
+        if let timeZone = TimeZone(identifier: "EST") {
+           calendar.timeZone = timeZone
+        }
+
+        let currentHour = calendar.component(.hour, from: date)
+        print(currentHour)
 
         if !boolean  {
             //load the requested number of documents
@@ -41,17 +115,44 @@ class FirebaseSession: ObservableObject{
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-
                     do{
                         var objects = [T]()
                         for document in querySnapshot?.documents ?? [] {
-
-                            //  let json = try? JSONSerialization.data(withJSONObject: document.data(), options: .prettyPrinted)
-
-//                            if document.get("units") as! Int > 0 {
-                            let object = try document.decode(as: objectType.self)
-                            objects.append(object)
-//                            }
+                            if cuisine != "" {
+                                if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) && (document.get("cuisine") as! String) == cuisine{
+                                    if status == "all"{
+                                        let object = try document.decode(as: objectType.self)
+                                        objects.append(object)
+                                    }else if status == "open" {
+                                        if (document.get("hours") as! [Int]).contains(currentHour){
+                                            let object = try document.decode(as: objectType.self)
+                                            objects.append(object)
+                                        }
+                                    }else {
+                                        if !(document.get("hours") as! [Int]).contains(currentHour){
+                                            let object = try document.decode(as: objectType.self)
+                                            objects.append(object)
+                                        }
+                                    }
+                                }
+                            } else{
+                                if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) {
+                                    if status == "all"{
+                                        let object = try document.decode(as: objectType.self)
+                                        objects.append(object)
+                                    }else if status == "open" {
+                                        if (document.get("hours") as! [Int]).contains(currentHour){
+                                            let object = try document.decode(as: objectType.self)
+                                            objects.append(object)
+                                        }
+                                    }else {
+                                        if !(document.get("hours") as! [Int]).contains(currentHour){
+                                            let object = try document.decode(as: objectType.self)
+                                            objects.append(object)
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         completion(objects)

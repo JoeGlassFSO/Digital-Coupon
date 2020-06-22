@@ -7,14 +7,13 @@
 //
 
 import SwiftUI
-import Alamofire
-import SwiftyJSON
+import GoogleSignIn
 
 struct ContentView: View {
     
     @State var image: UIImage?
     @State var show = true
-    @State var isLoggedIn: Bool = true
+    @State var isLoggedIn: Bool = false
     @State var isLoggingIn: Bool = false
     
     private let loginKey = "loggedIn"
@@ -30,12 +29,12 @@ struct ContentView: View {
                 ZStack{
                     VStack {
                         if show {
-                            if isLoggedIn {
+                            if UserDefaults.standard.bool(forKey: loginKey)  {
                                 //list the merchants
                                 MerchantsView()
                             } else {
                                 if !isLoggingIn{
-                                    //LoginView(isLoggedIn: self.$isLoggedIn, errorText: self.$errorText, isLoggingIn: self.$isLoggingIn, apicall: self.apicall, filters: self.$filters).transition(.move(edge: .bottom))
+                                    LoginView(isLoggedIn: self.$isLoggedIn, errorText: self.$errorText, isLoggingIn: self.$isLoggingIn).transition(.move(edge: .bottom))
                                 }else{
                                     VStack(alignment: .center) {
                                         Spacer()
@@ -46,21 +45,20 @@ struct ContentView: View {
                                 }
                             }
                         } else {
-                            //                    PageViewContainer( viewControllers: Page.getAll.map({  UIHostingController(rootView: PageView(page: $0) ) }), presentSignupView: {
-                            //                        withAnimation {
-                            //                            self.show = true
-                            //                        }
-                            //                        UserDefaults.standard.set(true, forKey: self.initialLaunchKey)
-                            //                    }).transition(.scale)
+//                            PageViewContainer( viewControllers: Page.getAll.map({  UIHostingController(rootView: PageView(page: $0) ) }), presentSignupView: {
+//                                withAnimation {
+//                                    self.show = true
+//                                }
+//                                UserDefaults.standard.set(true, forKey: self.initialLaunchKey)
+//                            }).transition(.scale)
                         }
                     }.frame(maxHeight: .infinity)
-                        //.background(Color.backgroundColor)
-                        .edgesIgnoringSafeArea(.bottom)
-                        .onTapGesture {
-                            // UIApplication.shared.endEditing()
+//                        .background(Color.backgroundColor)
+                        .onTapGesture{
+                            UIApplication.shared.endEditing()
                     }
                     .onAppear(){
-                        //self.checkloginStatus()
+                        self.checkloginStatus()
                     }
                 }
             }
@@ -68,12 +66,13 @@ struct ContentView: View {
     }
     
     func checkloginStatus(){
+        
         if session.checkAuth() != nil{
             //logged in
-            self.isLoggedIn = true
+            UserDefaults.standard.set(true, forKey: loginKey)
         } else {
             //not logged in
-            self.isLoggedIn = false
+            UserDefaults.standard.set(false, forKey: loginKey)
         }
     }
     
@@ -84,3 +83,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+

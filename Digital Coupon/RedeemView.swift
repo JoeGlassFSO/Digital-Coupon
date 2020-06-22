@@ -15,7 +15,9 @@ struct RedeemView: View {
     let frameSize: CGFloat = UIScreen.main.bounds.width/2
     
     var body: some View {
+        
         VStack{
+            
             Spacer()
             
             VStack{
