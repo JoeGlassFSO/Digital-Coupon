@@ -134,7 +134,8 @@ struct SignupView: View {
             "country" : country,
             "city" : city,
             "street" : street,
-            "state" : state
+            "state" : state,
+            "offers" : 0
         ]
         
         session.emailPassword(isLogin: false, withEmail: email, andPassword: pass, andData: docData) { (isLoggedIn) in

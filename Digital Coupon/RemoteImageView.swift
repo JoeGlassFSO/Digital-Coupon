@@ -10,28 +10,40 @@
 import SwiftUI
 
 struct RemoteImageView: View {
-      let frameSize: CGFloat = 95
+    
+    let frameSize: CGFloat = 95
+    
     
     @ObservedObject var imageLoader:ImageLoader
     
-    @State var image:UIImage = UIImage()
+    @State var image: UIImage = UIImage()
+    var circle: Bool = false
     
-    init(withURL url:String) {
+    init(withURL url:String, isCircle bool: Bool = false) {
         imageLoader = ImageLoader(urlString:url)
+        self.circle  = bool
     }
     var body: some View {
         HStack{
-            
+            if circle{
             Image(uiImage: imageLoader.data != nil ? UIImage(data:imageLoader.data!)! : UIImage())
                 .resizable()
-                .clipShape(Rectangle())
-                .background(Color.white)
-                .overlay(Rectangle().stroke(Color.blue, lineWidth: 1))
+                .background(Color.blue.opacity(0.2))
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.blue, lineWidth: 0))
                 .shadow(radius: 0)
-                .padding()
-                .frame(width: frameSize, height: frameSize)
+                .frame(width: frameSize-50, height: frameSize-50)
+            }else{
+                Image(uiImage: imageLoader.data != nil ? UIImage(data:imageLoader.data!)! : UIImage())
+                    .resizable()
+                    .background(Color.white)
+                    .clipShape(Rectangle())
+                    .overlay(Rectangle().stroke(Color.blue, lineWidth: 1))
+                    .shadow(radius: 0)
+                    .padding()
+                    .frame(width: frameSize, height: frameSize)
+            }
         }
-        
     }
 }
 

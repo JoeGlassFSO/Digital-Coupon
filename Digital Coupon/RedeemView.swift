@@ -9,15 +9,19 @@
 import SwiftUI
 
 struct RedeemView: View {
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var merchant: Merchant
+    var user: DCUser
+    
     @State var price: String = ""
+    @State var saves: String = ""
     let frameSize: CGFloat = UIScreen.main.bounds.width/2
     
     var body: some View {
         
         VStack{
-            
             Spacer()
             
             VStack{
@@ -29,22 +33,21 @@ struct RedeemView: View {
                     .font(.largeTitle)
                     .padding()
                     .padding()
-                Text("Confirmation code 00000")
+                Text("Confirmation code \(merchant.code)")
                     .fontWeight(.medium)
                     .font(.caption)
                 
             }.onAppear(perform: formatPrice)
-                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.blue, lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 2)
+                    .stroke(Color.blue, lineWidth: 1))
                 .padding([.leading, .trailing])
             
-            
-            Text("You have saved a total of $0.00")
+            Text("You have saved a total of \(saves)")
                 .font(.caption)
                 .fontWeight(.medium)
                 .padding()
             
             Spacer()
-            
             
             Button(action: {
                 self.presentationMode.wrappedValue.dismiss()
@@ -65,12 +68,18 @@ struct RedeemView: View {
     }
     
     func formatPrice(){
-        let largeNumber: Int = merchant.offer
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
+        
+        let largeNumber: Int = merchant.offer
         guard let formattedNumber = numberFormatter.string(from: NSNumber(value: largeNumber)) else { return }
         
         price = formattedNumber
+        
+        let largeNumber2: Int = user.offers
+        guard let formattedNumber2 = numberFormatter.string(from: NSNumber(value: largeNumber2)) else { return }
+        
+        saves = formattedNumber2
         
     }
 }
@@ -78,6 +87,6 @@ struct RedeemView: View {
 struct RedeemView_Previews: PreviewProvider {
     static var previews: some View {
         RedeemView(
-            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: []))
+            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: [], code: ""), user: DCUser.init(id: "", name: "", city: "", state: "", street: "", dob: "", country: "", email: "", offers: 0))
     }
 }

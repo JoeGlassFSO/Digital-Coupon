@@ -21,7 +21,8 @@ struct Merchant : Identifiable, Decodable{
     cuisine: String,
     name: String,
     rating: Int,
-    hours: [Int]
+    hours: [Int],
+    code: String
     
     
     
@@ -38,6 +39,7 @@ struct Merchant : Identifiable, Decodable{
         case name
         case rating
         case hours
+        case code
     }
     
     init(id: String,
@@ -51,7 +53,8 @@ struct Merchant : Identifiable, Decodable{
          cuisine: String,
          name: String,
          rating: Int,
-         hours: [Int]) throws {
+         hours: [Int],
+         code: String) throws {
         self.id = id
         self.city = city
         self.offer = offer
@@ -64,6 +67,7 @@ struct Merchant : Identifiable, Decodable{
         self.zip = zip
         self.image = image
         self.cuisine = cuisine
+        self.code = code
     }
     
     init(from decoder:Decoder) throws {
@@ -80,5 +84,6 @@ struct Merchant : Identifiable, Decodable{
         state = try values.decode(String.self, forKey: .state)
         street = try values.decode(String.self, forKey: .street)
         zip = try values.decode(String.self, forKey: .zip)
+        code = try values.decode(String.self, forKey: .code)
     }
 }

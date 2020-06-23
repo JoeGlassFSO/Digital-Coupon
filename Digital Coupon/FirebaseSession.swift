@@ -62,6 +62,54 @@ class FirebaseSession: ObservableObject{
             }
         }
     }
+    
+    func redeemOffer(withUID uid: String, offer: Int, andData docData: [String : Any]){
+        
+        //update offers value
+        db.collection("users").document(uid).setData([ "offers": offer], merge: true) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+        
+        db.collection("users").document(uid).setData(docData) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+    }
+    
+    
+    
+    func getUser(from collectionReference: String, withDocumentID documentID: String, completion: @escaping (DCUser) -> Void) {
+        
+        let ref = reference(to: collectionReference)
+        
+        ref.document(documentID).getDocument { (document, err) in
+            
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if let document = document {
+                    let id = self.auth.currentUser!.uid
+                    let name = (document.get("name") as! String)
+                    let email = (document.get("email") as! String)
+                    let city = (document.get("city") as! String)
+                    let country = (document.get("country") as! String)
+                    let state = (document.get("state") as! String)
+                    let street = (document.get("street") as! String)
+                    let dob = (document.get("dob") as! String)
+                    let offers = (document.get("offers") as! Int)
+                    let user: DCUser = DCUser(id: id, name: name, city: city, state: state, street: street, dob: dob, country: country, email: email, offers: offers)
+                    completion(user)
+                }
+            }
+        }
+    }
 
     func getCuisines(from collectionReference: String, completion: @escaping ([String]) -> Void) {
 
@@ -73,7 +121,6 @@ class FirebaseSession: ObservableObject{
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-                    do{
                         var objects = [String]()
                         for document in querySnapshot?.documents ?? [] {
                             let object = (document.get("name") as! String)
@@ -82,115 +129,109 @@ class FirebaseSession: ObservableObject{
                         }
 
                         completion(objects)
-
-                        self.lastSnap = querySnapshot!.documents.last
-
-                    }catch{
-                        print(error)
-                    }
                 }
             }
 
     }
 
-    func getMerchants<T: Decodable>(from collectionReference: String, returning objectType: T.Type, orderedBy order: String, withUpper upper: Int, andLower lower: Int, andStatus status: String, loadingMore boolean: Bool, withCuisine cuisine: String, completion: @escaping ([T]) -> Void) {
+        func getMerchants<T: Decodable>(from collectionReference: String, returning objectType: T.Type, orderedBy order: String, withUpper upper: Int, andLower lower: Int, andStatus status: String, loadingMore boolean: Bool, withCuisine cuisine: String, completion: @escaping ([T]) -> Void) {
 
-        let firstRef = reference(to: collectionReference)
-            .order(by: order, descending: true)
-            .limit(to: 9)
-        
-        let date = Date()
-        var calendar = Calendar.current
+            let firstRef = reference(to: collectionReference)
+                .order(by: order, descending: true)
+                .limit(to: 9)
+            
+            let date = Date()
+            var calendar = Calendar.current
 
-        if let timeZone = TimeZone(identifier: "EST") {
-           calendar.timeZone = timeZone
-        }
+            if let timeZone = TimeZone(identifier: "EST") {
+               calendar.timeZone = timeZone
+            }
 
-        let currentHour = calendar.component(.hour, from: date)
-        print(currentHour)
+            let currentHour = calendar.component(.hour, from: date)
+            print(currentHour)
 
-        if !boolean  {
-            //load the requested number of documents
-            firstRef.getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    do{
-                        var objects = [T]()
-                        for document in querySnapshot?.documents ?? [] {
-                            if cuisine != "" {
-                                if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) && (document.get("cuisine") as! String) == cuisine{
-                                    if status == "all"{
-                                        let object = try document.decode(as: objectType.self)
-                                        objects.append(object)
-                                    }else if status == "open" {
-                                        if (document.get("hours") as! [Int]).contains(currentHour){
+            if !boolean  {
+                //load the requested number of documents
+                firstRef.getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        do{
+                            var objects = [T]()
+                            for document in querySnapshot?.documents ?? [] {
+                                if cuisine != "" {
+                                    if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) && (document.get("cuisine") as! String) == cuisine{
+                                        if status == "all"{
                                             let object = try document.decode(as: objectType.self)
                                             objects.append(object)
-                                        }
-                                    }else {
-                                        if !(document.get("hours") as! [Int]).contains(currentHour){
-                                            let object = try document.decode(as: objectType.self)
-                                            objects.append(object)
+                                        }else if status == "open" {
+                                            if (document.get("hours") as! [Int]).contains(currentHour){
+                                                let object = try document.decode(as: objectType.self)
+                                                objects.append(object)
+                                            }
+                                        }else {
+                                            if !(document.get("hours") as! [Int]).contains(currentHour){
+                                                let object = try document.decode(as: objectType.self)
+                                                objects.append(object)
+                                            }
                                         }
                                     }
-                                }
-                            } else{
-                                if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) {
-                                    if status == "all"{
-                                        let object = try document.decode(as: objectType.self)
-                                        objects.append(object)
-                                    }else if status == "open" {
-                                        if (document.get("hours") as! [Int]).contains(currentHour){
+                                } else{
+                                    if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) {
+                                        if status == "all"{
                                             let object = try document.decode(as: objectType.self)
                                             objects.append(object)
-                                        }
-                                    }else {
-                                        if !(document.get("hours") as! [Int]).contains(currentHour){
-                                            let object = try document.decode(as: objectType.self)
-                                            objects.append(object)
+                                        }else if status == "open" {
+                                            if (document.get("hours") as! [Int]).contains(currentHour){
+                                                let object = try document.decode(as: objectType.self)
+                                                objects.append(object)
+                                            }
+                                        }else {
+                                            if !(document.get("hours") as! [Int]).contains(currentHour){
+                                                let object = try document.decode(as: objectType.self)
+                                                objects.append(object)
+                                            }
                                         }
                                     }
                                 }
                             }
+
+                            completion(objects)
+
+                            self.lastSnap = querySnapshot!.documents.last
+
+                        }catch{
+                            print(error)
                         }
-
-                        completion(objects)
-
-                        self.lastSnap = querySnapshot!.documents.last
-
-                    }catch{
-                        print(error)
                     }
                 }
-            }
 
 
-        } else {
+            } else {
 
-            let nextRef = firstRef
-                .start(afterDocument: lastSnap!)
-            nextRef.getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    do{
-                        var objects = [T]()
-                        for document in querySnapshot?.documents ?? [] {
-                            //  let json = try? JSONSerialization.data(withJSONObject: document.data(), options: .prettyPrinted)\
-                            let object = try document.decode(as: objectType.self)
-                            objects.append(object)
+                let nextRef = firstRef
+                    .start(afterDocument: lastSnap!)
+                nextRef.getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        do{
+                            var objects = [T]()
+                            for document in querySnapshot?.documents ?? [] {
+                                //  let json = try? JSONSerialization.data(withJSONObject: document.data(), options: .prettyPrinted)\
+                                let object = try document.decode(as: objectType.self)
+                                objects.append(object)
+                            }
+                            completion(objects)
+                            self.lastSnap = querySnapshot?.documents.last
+                        }catch{
+                            print(error)
                         }
-                        completion(objects)
-                        self.lastSnap = querySnapshot?.documents.last
-                    }catch{
-                        print(error)
                     }
                 }
             }
         }
     }
-}
 
 
 //import FirebaseDatabase

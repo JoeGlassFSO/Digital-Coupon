@@ -28,32 +28,22 @@ struct ContentView: View {
             NavigationView{
                 ZStack{
                     VStack {
-                        if show {
-                            if UserDefaults.standard.bool(forKey: loginKey)  {
-                                //list the merchants
-                                MerchantsView()
-                            } else {
-                                if !isLoggingIn{
-                                    LoginView(isLoggedIn: self.$isLoggedIn, errorText: self.$errorText, isLoggingIn: self.$isLoggingIn).transition(.move(edge: .bottom))
-                                }else{
-                                    VStack(alignment: .center) {
-                                        Spacer()
-                                        ActivityIndicator()
-                                            .frame(width: 60, height: 60)
-                                        Spacer()
-                                    }.foregroundColor(Color.blue)
-                                }
-                            }
+                        if UserDefaults.standard.bool(forKey: loginKey)  {
+                            //list the merchants
+                            MerchantsView()
                         } else {
-//                            PageViewContainer( viewControllers: Page.getAll.map({  UIHostingController(rootView: PageView(page: $0) ) }), presentSignupView: {
-//                                withAnimation {
-//                                    self.show = true
-//                                }
-//                                UserDefaults.standard.set(true, forKey: self.initialLaunchKey)
-//                            }).transition(.scale)
+                            if !isLoggingIn{
+                                LoginView(isLoggedIn: self.$isLoggedIn, errorText: self.$errorText, isLoggingIn: self.$isLoggingIn).transition(.move(edge: .bottom))
+                            }else{
+                                VStack(alignment: .center) {
+                                    Spacer()
+                                    ActivityIndicator()
+                                        .frame(width: 60, height: 60)
+                                    Spacer()
+                                }.foregroundColor(Color.blue)
+                            }
                         }
                     }.frame(maxHeight: .infinity)
-//                        .background(Color.backgroundColor)
                         .onTapGesture{
                             UIApplication.shared.endEditing()
                     }

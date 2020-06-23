@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct MerchantsView: View {
     
@@ -26,6 +27,7 @@ struct MerchantsView: View {
     @State var selectedStatus: Int = 0
     @State var selectedPrice: Int = 1
     @State var cuisineName: String = ""
+    @State var user: DCUser?
     
     var body: some View {
         LoadingView(isShowing: .constant(ans)) {
@@ -33,7 +35,8 @@ struct MerchantsView: View {
             List(0..<self.merchants.count, id: \.self) { index in
                     
                     NavigationLink(destination: ListingDetail(
-                        merchant: self.merchants[index]
+                        merchant: self.merchants[index],
+                        user: self.user
                         )
                     ){
                         ListingItem(
@@ -48,7 +51,7 @@ struct MerchantsView: View {
             .navigationBarTitle("Digital Coupon", displayMode: .inline)
             .onAppear(perform: self.fetch)
             .navigationBarItems(leading:
-                NavigationLink(destination: ProileView(), tag: 0, selection: self.$selection) {
+                NavigationLink(destination: ProileView(user: self.$user), tag: 0, selection: self.$selection) {
                 Button(action: {
                 withAnimation {
                     self.selection = 0
@@ -98,6 +101,14 @@ struct MerchantsView: View {
             default:
                 upper = 1000000
                 lower = 0
+            }
+        }
+        
+        if user == nil{
+            if let id = Auth.auth().currentUser?.uid  {
+                session.getUser(from: "users", withDocumentID: id) { (user) in
+                    self.user = user
+                }
             }
         }
         

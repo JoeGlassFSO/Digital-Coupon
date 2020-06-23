@@ -10,7 +10,10 @@ import SwiftUI
 
 struct ListingDetail: View {
     
+    @ObservedObject var session = FirebaseSession()
+    
     var merchant: Merchant
+    var user: DCUser?
     let frameSize: CGFloat = 65
     @State var selection: Int? = nil
     
@@ -65,12 +68,12 @@ struct ListingDetail: View {
             Text("\(merchant.offer)")
                 .font(.system(size: 100))
                 .fontWeight(.semibold)
-
+            
             Spacer()
             
-            NavigationLink(destination: RedeemView(merchant: merchant), tag: 1, selection: $selection) {
+            NavigationLink(destination: RedeemView(merchant: merchant, user: self.user!), tag: 1, selection: $selection) {
             Button(action: {
-                self.selection = 1
+                self.redeemOffer()
                 }){
                     HStack {
                         Spacer()
@@ -82,7 +85,6 @@ struct ListingDetail: View {
                         .background(Color.blue.opacity(0.3))
                 }
             }
-            
         }
         .foregroundColor(.blue)
             .navigationBarTitle(merchant.name)
@@ -97,12 +99,29 @@ struct ListingDetail: View {
         price = formattedNumber
         
     }
+    
+    func redeemOffer(){
+        
+        let id = merchant.id
+        let image = merchant.image
+        let name = merchant.name
+        
+        
+        let docData: [String: Any] = [
+            "name" : name,
+            "image" : image,
+            "id" : id
+        ]
+        
+        
+        selection = 1
+    }
 }
 
 struct ListingDetail_Previews: PreviewProvider {
     static var previews: some View {
         ListingDetail(
-            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: [])
+            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: [], code: "")
         )
     }
 }

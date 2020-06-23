@@ -9,15 +9,95 @@
 import SwiftUI
 
 struct ProileView: View {
+    
+    @Binding var user: DCUser?
+    @State var saves = ""
     var body: some View {
-        VStack{
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        ScrollView{
+            VStack(alignment: .leading, spacing: 10){
+                HStack{
+                    Spacer()
+                    Image(systemName: "person.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: UIScreen.main.bounds.height/6, alignment: .center)
+                        .padding()
+                        .foregroundColor(.white)
+                    Spacer()
+                }.background(Color.blue.opacity(0.3))
+                VStack(alignment: .leading){
+                    Text(user!.name)
+                        .font(.title)
+                        .fontWeight(.medium)
+                    Text("\(user!.city), \(user!.state)")
+                        .font(.caption)
+                }.padding(30)
+                
+                VStack(alignment: .leading){
+                    Text("Total saved")
+                        .font(.headline)
+                        .fontWeight(.heavy)
+                        .padding()
+                    
+                    HStack{
+                        Spacer()
+                        Text(saves)
+                            .font(.system(size: 42))
+                            .fontWeight(.medium)
+                        Spacer()
+                    }.padding()
+                        .onAppear(perform: formatPrice)
+                    Divider()
+                        .background(Color.blue.opacity(0.5))
+                    Text("Top Merchant Savings")
+                        .font(.headline)
+                        .fontWeight(.heavy)
+                        .padding()
+                    
+                    HStack{
+                        ForEach(0..<3){_ in
+                            RemoteImageView(withURL: "", isCircle: true)
+                        }
+                    }.padding()
+                    
+                    Divider()
+                        .background(Color.blue.opacity(0.5))
+                    Text("Top Frequented Merchants")
+                        .font(.headline)
+                        .fontWeight(.heavy)
+                        .padding()
+                    
+                    HStack{
+                        ForEach(0..<3){_ in
+                            RemoteImageView(withURL: "", isCircle: true)
+                        }
+                    }.padding()
+                    
+                    Divider()
+                        .background(Color.blue.opacity(0.5))
+                }.background(Color.blue.opacity(0.1))
+                
+                Spacer()
+            }
         }.navigationBarTitle("PROFILE")
+            .foregroundColor(.blue)
+    }
+    
+    func formatPrice(){
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        
+        let largeNumber2: Int = user!.offers
+        guard let formattedNumber2 = numberFormatter.string(from: NSNumber(value: largeNumber2)) else { return }
+        
+        saves = formattedNumber2
+        
     }
 }
 
-struct ProileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProileView()
-    }
-}
+//struct ProileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProileView(user: DCUser.init(id: "", name: "", city: "", state: "", street: "", dob: "", country: "", email: ""))
+//    }
+//}

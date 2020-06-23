@@ -24,6 +24,7 @@
 		0471C754249BFE330012ED7F /* ListingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0471C753249BFE330012ED7F /* ListingItem.swift */; };
 		04A0B26324A04CAC00306760 /* AdaptsToSoftwareKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0B26224A04CAC00306760 /* AdaptsToSoftwareKeyboard.swift */; };
 		04E3325C24A0FDAB00E6DEB9 /* CuisineListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3325B24A0FDAB00E6DEB9 /* CuisineListView.swift */; };
+		04E3325E24A2349200E6DEB9 /* DCUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3325D24A2349200E6DEB9 /* DCUser.swift */; };
 		04FF944F249C1A4600D56B96 /* RedeemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF944E249C1A4500D56B96 /* RedeemView.swift */; };
 		04FF9451249C2E2900D56B96 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF9450249C2E2900D56B96 /* RemoteImageView.swift */; };
 		04FF9453249E67F400D56B96 /* ProileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF9452249E67F400D56B96 /* ProileView.swift */; };
@@ -55,6 +56,7 @@
 		0471C753249BFE330012ED7F /* ListingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingItem.swift; sourceTree = "<group>"; };
 		04A0B26224A04CAC00306760 /* AdaptsToSoftwareKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdaptsToSoftwareKeyboard.swift; sourceTree = "<group>"; };
 		04E3325B24A0FDAB00E6DEB9 /* CuisineListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuisineListView.swift; sourceTree = "<group>"; };
+		04E3325D24A2349200E6DEB9 /* DCUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCUser.swift; sourceTree = "<group>"; };
 		04FF944E249C1A4500D56B96 /* RedeemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemView.swift; sourceTree = "<group>"; };
 		04FF9450249C2E2900D56B96 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 		04FF9452249E67F400D56B96 /* ProileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProileView.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				04FF945A24A0186000D56B96 /* SignupView.swift */,
 				04FF945B24A0186100D56B96 /* UIApplicationExt.swift */,
 				0471C74B249BE8020012ED7F /* Merchant.swift */,
+				04E3325D24A2349200E6DEB9 /* DCUser.swift */,
 				0471C733249B549E0012ED7F /* Assets.xcassets */,
 				0471C738249B549E0012ED7F /* LaunchScreen.storyboard */,
 				0471C749249BE6F60012ED7F /* LoadingView.swift */,
@@ -301,6 +304,7 @@
 				0471C748249BE65B0012ED7F /* MerchantsView.swift in Sources */,
 				04FF945D24A0186100D56B96 /* LCTextfield.swift in Sources */,
 				04A0B26324A04CAC00306760 /* AdaptsToSoftwareKeyboard.swift in Sources */,
+				04E3325E24A2349200E6DEB9 /* DCUser.swift in Sources */,
 				04FF9453249E67F400D56B96 /* ProileView.swift in Sources */,
 				0471C74C249BE8020012ED7F /* Merchant.swift in Sources */,
 				04FF9455249E680B00D56B96 /* SortView.swift in Sources */,

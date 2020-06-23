@@ -76,7 +76,7 @@ struct ListingItem: View {
 struct ListingItem_Previews: PreviewProvider {
     static var previews: some View {
         ListingDetail(
-            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "Merchant Address", zip: "", image: "", cuisine: "Cuisine", name: "Merchant Name", rating: 0, hours: [])
+            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "Merchant Address", zip: "", image: "", cuisine: "Cuisine", name: "Merchant Name", rating: 0, hours: [], code: "")
         )
     }
 }
