@@ -28,7 +28,7 @@ struct RemoteImageView: View {
             if circle{
             Image(uiImage: imageLoader.data != nil ? UIImage(data:imageLoader.data!)! : UIImage())
                 .resizable()
-                .background(Color.blue.opacity(0.2))
+                .background(Color.blue.opacity(0.0))
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.blue, lineWidth: 0))
                 .shadow(radius: 0)

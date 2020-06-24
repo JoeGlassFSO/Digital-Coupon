@@ -55,17 +55,15 @@ struct ListingItem: View {
                     }
                     
                 }
-                
-                
             }
             .foregroundColor(.blue)
     }
     
     func formatPrice(){
-        
-        let largeNumber: Int = merchant.cost
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
+        
+        let largeNumber: Int = merchant.cost
         guard let formattedNumber = numberFormatter.string(from: NSNumber(value: largeNumber)) else { return }
         
         price = formattedNumber
@@ -76,7 +74,7 @@ struct ListingItem: View {
 struct ListingItem_Previews: PreviewProvider {
     static var previews: some View {
         ListingDetail(
-            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "Merchant Address", zip: "", image: "", cuisine: "Cuisine", name: "Merchant Name", rating: 0, hours: [], code: "")
+            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "Merchant Address", zip: "", image: "", cuisine: "Cuisine", name: "Merchant Name", rating: 0, hours: [], code: ""), refreshUserInfo: .constant(false)
         )
     }
 }

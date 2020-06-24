@@ -76,7 +76,7 @@ struct RedeemView: View {
         
         price = formattedNumber
         
-        let largeNumber2: Int = user.offers
+        let largeNumber2: Int = user.savings + merchant.offer
         guard let formattedNumber2 = numberFormatter.string(from: NSNumber(value: largeNumber2)) else { return }
         
         saves = formattedNumber2
@@ -87,6 +87,6 @@ struct RedeemView: View {
 struct RedeemView_Previews: PreviewProvider {
     static var previews: some View {
         RedeemView(
-            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: [], code: ""), user: DCUser.init(id: "", name: "", city: "", state: "", street: "", dob: "", country: "", email: "", offers: 0))
+            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: [], code: ""), user: DCUser.init(id: "", name: "", city: "", state: "", street: "", dob: "", country: "", email: "", savings: 0, topSaves: [DCUserMerchants](), topVisits: [DCUserMerchants]()))
     }
 }

@@ -13,15 +13,15 @@ import FirebaseAuth
 class FirebaseSession: ObservableObject{
     var db: Firestore = Firestore.firestore()
     var auth: Auth = Auth.auth()
-
+    
     var lastSnap: DocumentSnapshot?
-
-//    @Published var items: [Merchant] = []
-
+    
+    //    @Published var items: [Merchant] = []
+    
     private func reference(to collectionRefence: String) -> CollectionReference{
-
+        
         return db.collection(collectionRefence)
-
+        
     }
     
     func checkAuth() -> User?{
@@ -32,14 +32,14 @@ class FirebaseSession: ObservableObject{
     
     func emailPassword(isLogin bool: Bool, withEmail email: String, andPassword password: String, andData docData: [String : Any]?, completion: @escaping (Bool) -> Void){
         if bool {
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-            guard self != nil else { return }
-            if authResult?.user.uid != nil {
-            completion(true)
-            }else{
-                completion(false)
+            Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+                guard self != nil else { return }
+                if authResult?.user.uid != nil {
+                    completion(true)
+                }else{
+                    completion(false)
+                }
             }
-        }
         }else{
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                 if let id = authResult?.user.uid{
@@ -63,34 +63,68 @@ class FirebaseSession: ObservableObject{
         }
     }
     
-    func redeemOffer(withUID uid: String, offer: Int, andData docData: [String : Any]){
+    func redeemOffer(withUID uid: String, fromMerchant merchant: String, offer: Int, savings: Int, andData docData: [String : Any], completion: @escaping (Bool) -> Void) {
         
-        //update offers value
-        db.collection("users").document(uid).setData([ "offers": offer], merge: true) { err in
+        let userRef = self.reference(to: "users").document(uid)
+        let merRef = self.reference(to: "users/\(uid)/merchants").document(merchant)
+        //get merchant info
+        merRef.getDocument { (document, err) in
             if let err = err {
-                print("Error writing document: \(err)")
+                print("Error getting documents: \(err)")
             } else {
-                print("Document successfully written!")
-            }
-        }
-        
-        db.collection("users").document(uid).setData(docData) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
+                if let document = document {
+                    if document.exists{
+                        let visits = (document.get("visits") as! Int)
+                        let saving = (document.get("savings") as! Int)
+                        var fullDoc = docData
+                        fullDoc.updateValue(visits + 1, forKey:"visits")
+                        fullDoc.updateValue(saving + offer, forKey: "savings")
+                        
+                        //then update said merchant's info
+                        merRef.setData(fullDoc) { err in
+                            if let err = err {
+                                completion(false)
+                                print("Error writing document: \(err)")
+                            } else {
+                                userRef.setData([ "savings": savings], merge: true)
+                                completion(true)
+                                print("Document successfully written!")
+                            }
+                        }
+                    }else{
+                        var fullDoc = docData
+                        fullDoc.updateValue(1, forKey:"visits")
+                        fullDoc.updateValue(offer, forKey: "savings")
+                        //then update said merchant's info
+                        merRef.setData(fullDoc) { err in
+                            if let err = err {
+                                completion(false)
+                                print("Error writing document: \(err)")
+                            } else {
+                                userRef.setData([ "savings": savings], merge: true)
+                                completion(true)
+                                print("Document successfully written!")
+                            }
+                        }
+                    }
+                }else{
+                    completion(false)
+                }
             }
         }
     }
-    
-    
-    
+
     func getUser(from collectionReference: String, withDocumentID documentID: String, completion: @escaping (DCUser) -> Void) {
         
-        let ref = reference(to: collectionReference)
+        let userRef = reference(to: collectionReference).document(documentID)
+        let userMersSRef = reference(to: collectionReference).document(documentID).collection("merchants")
+            .order(by: "savings", descending: true)
+            .limit(to: 5)
+        let userMersVRef = reference(to: collectionReference).document(documentID).collection("merchants")
+            .order(by: "visits", descending: true)
+            .limit(to: 5)
         
-        ref.document(documentID).getDocument { (document, err) in
-            
+        userRef.getDocument { (document, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -103,177 +137,159 @@ class FirebaseSession: ObservableObject{
                     let state = (document.get("state") as! String)
                     let street = (document.get("street") as! String)
                     let dob = (document.get("dob") as! String)
-                    let offers = (document.get("offers") as! Int)
-                    let user: DCUser = DCUser(id: id, name: name, city: city, state: state, street: street, dob: dob, country: country, email: email, offers: offers)
-                    completion(user)
+                    let savings = (document.get("savings") as! Int)
+                    
+                    //load the user merchant documents
+                    userMersSRef.getDocuments() { (querySnapshot, err) in
+                        if let err = err {
+                            let user: DCUser = DCUser(id: id, name: name, city: city, state: state, street: street, dob: dob, country: country, email: email, savings: savings, topSaves: [DCUserMerchants](), topVisits: [DCUserMerchants]())
+                            completion(user)
+                            print("Error getting saves: \(err)")
+                        } else {
+                            do{
+                                var objectsS = [DCUserMerchants]()
+                                for document in querySnapshot?.documents ?? [] {
+                                    let object = try document.decode(as: DCUserMerchants.self)
+                                    objectsS.append(object)
+                                }
+                                
+                                userMersVRef.getDocuments() { (querySnapshot, err) in
+                                    if let err = err {
+                                        let user: DCUser = DCUser(id: id, name: name, city: city, state: state, street: street, dob: dob, country: country, email: email, savings: savings, topSaves: objectsS, topVisits: [DCUserMerchants]())
+                                        completion(user)
+                                        print("Error getting visits: \(err)")
+                                    } else {
+                                        do{
+                                            var objectsV = [DCUserMerchants]()
+                                            for document in querySnapshot?.documents ?? [] {
+                                                let object = try document.decode(as: DCUserMerchants.self)
+                                                objectsV.append(object)
+                                            }
+                                            let user: DCUser = DCUser(id: id, name: name, city: city, state: state, street: street, dob: dob, country: country, email: email, savings: savings,topSaves: objectsS, topVisits: objectsV)
+                                            completion(user)
+                                        }catch{
+                                            print(error)
+                                        }
+                                    }
+                                }
+                            }catch{
+                                print(error)
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-
+    
     func getCuisines(from collectionReference: String, completion: @escaping ([String]) -> Void) {
-
+        
         let firstRef = reference(to: collectionReference)
         
-
-            //load the requested documents
+        //load the requested documents
+        firstRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                var objects = [String]()
+                for document in querySnapshot?.documents ?? [] {
+                    let object = (document.get("name") as! String)
+                    objects.append(object)
+                }
+                completion(objects)
+            }
+        }
+    }
+    
+    func getMerchants<T: Decodable>(from collectionReference: String, returning objectType: T.Type, orderedBy order: String, withUpper upper: Int, andLower lower: Int, andStatus status: String, loadingMore boolean: Bool, withCuisine cuisine: String, completion: @escaping ([T]) -> Void) {
+        
+        let firstRef = reference(to: collectionReference)
+            .order(by: order, descending: true)
+            .limit(to: 9)
+        
+        let date = Date()
+        var calendar = Calendar.current
+        
+        if let timeZone = TimeZone(identifier: "EST") {
+            calendar.timeZone = timeZone
+        }
+        
+        let currentHour = calendar.component(.hour, from: date)
+        print(currentHour)
+        
+        if !boolean  {
+            //load the requested number of documents
             firstRef.getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-                        var objects = [String]()
+                    do{
+                        var objects = [T]()
                         for document in querySnapshot?.documents ?? [] {
-                            let object = (document.get("name") as! String)
-                            objects.append(object)
-                            
-                        }
-
-                        completion(objects)
-                }
-            }
-
-    }
-
-        func getMerchants<T: Decodable>(from collectionReference: String, returning objectType: T.Type, orderedBy order: String, withUpper upper: Int, andLower lower: Int, andStatus status: String, loadingMore boolean: Bool, withCuisine cuisine: String, completion: @escaping ([T]) -> Void) {
-
-            let firstRef = reference(to: collectionReference)
-                .order(by: order, descending: true)
-                .limit(to: 9)
-            
-            let date = Date()
-            var calendar = Calendar.current
-
-            if let timeZone = TimeZone(identifier: "EST") {
-               calendar.timeZone = timeZone
-            }
-
-            let currentHour = calendar.component(.hour, from: date)
-            print(currentHour)
-
-            if !boolean  {
-                //load the requested number of documents
-                firstRef.getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-                    } else {
-                        do{
-                            var objects = [T]()
-                            for document in querySnapshot?.documents ?? [] {
-                                if cuisine != "" {
-                                    if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) && (document.get("cuisine") as! String) == cuisine{
-                                        if status == "all"{
+                            if cuisine != "" {
+                                if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) && (document.get("cuisine") as! String) == cuisine{
+                                    if status == "all"{
+                                        let object = try document.decode(as: objectType.self)
+                                        objects.append(object)
+                                    }else if status == "open" {
+                                        if (document.get("hours") as! [Int]).contains(currentHour){
                                             let object = try document.decode(as: objectType.self)
                                             objects.append(object)
-                                        }else if status == "open" {
-                                            if (document.get("hours") as! [Int]).contains(currentHour){
-                                                let object = try document.decode(as: objectType.self)
-                                                objects.append(object)
-                                            }
-                                        }else {
-                                            if !(document.get("hours") as! [Int]).contains(currentHour){
-                                                let object = try document.decode(as: objectType.self)
-                                                objects.append(object)
-                                            }
+                                        }
+                                    }else {
+                                        if !(document.get("hours") as! [Int]).contains(currentHour){
+                                            let object = try document.decode(as: objectType.self)
+                                            objects.append(object)
                                         }
                                     }
-                                } else{
-                                    if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) {
-                                        if status == "all"{
+                                }
+                            } else{
+                                if ((document.get("cost") as! Int) >= lower && (document.get("cost") as! Int) <= upper) {
+                                    if status == "all"{
+                                        let object = try document.decode(as: objectType.self)
+                                        objects.append(object)
+                                    }else if status == "open" {
+                                        if (document.get("hours") as! [Int]).contains(currentHour){
                                             let object = try document.decode(as: objectType.self)
                                             objects.append(object)
-                                        }else if status == "open" {
-                                            if (document.get("hours") as! [Int]).contains(currentHour){
-                                                let object = try document.decode(as: objectType.self)
-                                                objects.append(object)
-                                            }
-                                        }else {
-                                            if !(document.get("hours") as! [Int]).contains(currentHour){
-                                                let object = try document.decode(as: objectType.self)
-                                                objects.append(object)
-                                            }
+                                        }
+                                    }else {
+                                        if !(document.get("hours") as! [Int]).contains(currentHour){
+                                            let object = try document.decode(as: objectType.self)
+                                            objects.append(object)
                                         }
                                     }
                                 }
                             }
-
-                            completion(objects)
-
-                            self.lastSnap = querySnapshot!.documents.last
-
-                        }catch{
-                            print(error)
                         }
+                        completion(objects)
+                        self.lastSnap = querySnapshot!.documents.last
+                    }catch{
+                        print(error)
                     }
                 }
-
-
-            } else {
-
-                let nextRef = firstRef
-                    .start(afterDocument: lastSnap!)
-                nextRef.getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-                    } else {
-                        do{
-                            var objects = [T]()
-                            for document in querySnapshot?.documents ?? [] {
-                                //  let json = try? JSONSerialization.data(withJSONObject: document.data(), options: .prettyPrinted)\
-                                let object = try document.decode(as: objectType.self)
-                                objects.append(object)
-                            }
-                            completion(objects)
-                            self.lastSnap = querySnapshot?.documents.last
-                        }catch{
-                            print(error)
+            }
+        } else {
+            let nextRef = firstRef
+                .start(afterDocument: lastSnap!)
+            nextRef.getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    do{
+                        var objects = [T]()
+                        for document in querySnapshot?.documents ?? [] {
+                            //  let json = try? JSONSerialization.data(withJSONObject: document.data(), options: .prettyPrinted)\
+                            let object = try document.decode(as: objectType.self)
+                            objects.append(object)
                         }
+                        completion(objects)
+                        self.lastSnap = querySnapshot?.documents.last
+                    }catch{
+                        print(error)
                     }
                 }
             }
         }
     }
-
-
-//import FirebaseDatabase
-//
-//class DatabaseSession{
-//    
-//    var ref: DatabaseReference!
-//    var posts = [Post]()
-//    
-//    
-//    func getPosts(from child: String, completion: @escaping([Post]) -> Void) {
-//        var count = 0
-//        
-//        ref = Database.database().reference()
-//        //let userID = Auth.auth().currentUser?.uid
-//        ref.child(child).observe(.childAdded, with: { (snapshot) in
-//            count += 1
-//            
-//            let value = snapshot.value as? NSDictionary
-//            
-//            let pTxt = value?["pTxt"] as? String
-//            let uId = value?["uId"] as? String
-//            let pLikes = value?["pLikes"] as? String
-//            let uOthername = value?["uOthername"] as? String
-//            let uSurname = value?["uSurname"] as? String
-//            let uPhoto = value?["uPhoto"] as? String
-//            let pTime = value?["pTime"] as? String
-//            let uEmail = value?["uEmail"] as? String
-//            let pId = value?["pId"] as? String
-//            let pComments = value?["pComments"] as? String
-//            let pPhoto = value?["pPhoto"] as? String
-//            
-//            let post = Post(pTxt: pTxt, uId: uId, pLikes: pLikes, uOthername: uOthername, uSurname: uSurname, uPhoto: uPhoto, pTime: pTime, uEmail: uEmail, pId: pId, pComments: pComments, pPhoto: pPhoto)
-//            
-//            self.posts.append(post)
-//            
-//            if snapshot.childrenCount == count {
-//                completion(self.posts)
-//            }
-//            
-//        }) { (error) in
-//            print("FBDBERR: \(error.localizedDescription)")
-//        }
-//    }
-//}
+}

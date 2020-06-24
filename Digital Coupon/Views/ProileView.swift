@@ -35,7 +35,7 @@ struct ProileView: View {
                 }.padding(30)
                 
                 VStack(alignment: .leading){
-                    Text("Total saved")
+                    Text("Total Saved")
                         .font(.headline)
                         .fontWeight(.heavy)
                         .padding()
@@ -50,14 +50,14 @@ struct ProileView: View {
                         .onAppear(perform: formatPrice)
                     Divider()
                         .background(Color.blue.opacity(0.5))
-                    Text("Top Merchant Savings")
+                    Text("Top Merchant. Savings")
                         .font(.headline)
                         .fontWeight(.heavy)
                         .padding()
                     
                     HStack{
-                        ForEach(0..<3){_ in
-                            RemoteImageView(withURL: "", isCircle: true)
+                        ForEach(0..<user!.topSaves.count){ i in
+                            RemoteImageView(withURL: self.user!.topSaves[i].image, isCircle: true)
                         }
                     }.padding()
                     
@@ -69,8 +69,8 @@ struct ProileView: View {
                         .padding()
                     
                     HStack{
-                        ForEach(0..<3){_ in
-                            RemoteImageView(withURL: "", isCircle: true)
+                        ForEach(0..<user!.topVisits.count){ i in
+                            RemoteImageView(withURL: self.user!.topVisits[i].image, isCircle: true)
                         }
                     }.padding()
                     
@@ -88,11 +88,10 @@ struct ProileView: View {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
         
-        let largeNumber2: Int = user!.offers
+        let largeNumber2: Int = user!.savings
         guard let formattedNumber2 = numberFormatter.string(from: NSNumber(value: largeNumber2)) else { return }
         
         saves = formattedNumber2
-        
     }
 }
 

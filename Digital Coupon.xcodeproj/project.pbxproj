@@ -103,30 +103,13 @@
 		0471C72C249B549D0012ED7F /* Digital Coupon */ = {
 			isa = PBXGroup;
 			children = (
-				0471C72D249B549D0012ED7F /* AppDelegate.swift */,
-				0471C72F249B549D0012ED7F /* SceneDelegate.swift */,
-				0471C747249BE65B0012ED7F /* MerchantsView.swift */,
-				0471C731249B549D0012ED7F /* ContentView.swift */,
-				04FF945924A0185F00D56B96 /* LCTextfield.swift */,
-				04A0B26224A04CAC00306760 /* AdaptsToSoftwareKeyboard.swift */,
-				04FF945824A0185D00D56B96 /* LoginView.swift */,
-				04FF945A24A0186000D56B96 /* SignupView.swift */,
-				04FF945B24A0186100D56B96 /* UIApplicationExt.swift */,
-				0471C74B249BE8020012ED7F /* Merchant.swift */,
-				04E3325D24A2349200E6DEB9 /* DCUser.swift */,
+				04E3326224A393E700E6DEB9 /* Base */,
+				04E3325F24A3936B00E6DEB9 /* Authentication */,
+				04E3326024A3939100E6DEB9 /* Models */,
+				04E3326124A393AA00E6DEB9 /* Views */,
+				04E3326324A3944100E6DEB9 /* Helpers */,
 				0471C733249B549E0012ED7F /* Assets.xcassets */,
-				0471C738249B549E0012ED7F /* LaunchScreen.storyboard */,
-				0471C749249BE6F60012ED7F /* LoadingView.swift */,
-				04FF944E249C1A4500D56B96 /* RedeemView.swift */,
-				0471C74E249BE8DE0012ED7F /* ListingDetail.swift */,
-				0471C751249BEF9E0012ED7F /* SnapshotExtension.swift */,
-				04E3325B24A0FDAB00E6DEB9 /* CuisineListView.swift */,
-				04FF9452249E67F400D56B96 /* ProileView.swift */,
-				04FF9454249E680B00D56B96 /* SortView.swift */,
-				0471C753249BFE330012ED7F /* ListingItem.swift */,
 				0471C741249B8F180012ED7F /* FirebaseSession.swift */,
-				0471C743249B8FD00012ED7F /* ActivityIndicator.swift */,
-				04FF9450249C2E2900D56B96 /* RemoteImageView.swift */,
 				0471C73B249B549E0012ED7F /* Info.plist */,
 				0471C745249BA05B0012ED7F /* GoogleService-Info.plist */,
 				0471C735249B549E0012ED7F /* Preview Content */,
@@ -140,6 +123,63 @@
 				0471C736249B549E0012ED7F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		04E3325F24A3936B00E6DEB9 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				04FF945924A0185F00D56B96 /* LCTextfield.swift */,
+				04FF945A24A0186000D56B96 /* SignupView.swift */,
+				04FF945824A0185D00D56B96 /* LoginView.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		04E3326024A3939100E6DEB9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0471C74B249BE8020012ED7F /* Merchant.swift */,
+				04E3325D24A2349200E6DEB9 /* DCUser.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		04E3326124A393AA00E6DEB9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0471C747249BE65B0012ED7F /* MerchantsView.swift */,
+				0471C731249B549D0012ED7F /* ContentView.swift */,
+				04FF944E249C1A4500D56B96 /* RedeemView.swift */,
+				0471C74E249BE8DE0012ED7F /* ListingDetail.swift */,
+				04FF9452249E67F400D56B96 /* ProileView.swift */,
+				04FF9454249E680B00D56B96 /* SortView.swift */,
+				0471C753249BFE330012ED7F /* ListingItem.swift */,
+				04E3325B24A0FDAB00E6DEB9 /* CuisineListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		04E3326224A393E700E6DEB9 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				0471C72D249B549D0012ED7F /* AppDelegate.swift */,
+				0471C72F249B549D0012ED7F /* SceneDelegate.swift */,
+				0471C738249B549E0012ED7F /* LaunchScreen.storyboard */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		04E3326324A3944100E6DEB9 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				04A0B26224A04CAC00306760 /* AdaptsToSoftwareKeyboard.swift */,
+				04FF945B24A0186100D56B96 /* UIApplicationExt.swift */,
+				0471C751249BEF9E0012ED7F /* SnapshotExtension.swift */,
+				0471C749249BE6F60012ED7F /* LoadingView.swift */,
+				04FF9450249C2E2900D56B96 /* RemoteImageView.swift */,
+				0471C743249B8FD00012ED7F /* ActivityIndicator.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		1C6E4B8E5AB23AC52D74695A /* Pods */ = {

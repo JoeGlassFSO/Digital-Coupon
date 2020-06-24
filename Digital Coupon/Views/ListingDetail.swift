@@ -7,30 +7,44 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ListingDetail: View {
     
     @ObservedObject var session = FirebaseSession()
     
+    @State var ans: Bool = false
     var merchant: Merchant
     var user: DCUser?
+    @Binding var refreshUserInfo: Bool
     let frameSize: CGFloat = 65
     @State var selection: Int? = nil
     
     @State var price: String = ""
+    @State var offerStr: String = ""
     var leadPadding: CGFloat = 24
     var trailPadding: CGFloat = 32
     var bottPadding: CGFloat = 16
     
+    @State var showAlert = false
+    var alert: Alert {
+        Alert(
+            title: Text("Redemption Status"),
+            message: Text("Sorry, we could not redeeem the offer successfully. Please try again"),
+            dismissButton: .default(Text("Okay"))
+            )
+    }
+    
     var body: some View {
         
+        LoadingView(isShowing: .constant(ans)) {
         VStack {
             
             HStack {
                 VStack {
                     
                     Spacer()
-                    RemoteImageView(withURL: merchant.image)
+                    RemoteImageView(withURL: self.merchant.image)
                 }
                 
                 Spacer()
@@ -41,14 +55,14 @@ struct ListingDetail: View {
             HStack(alignment: .top) {
             VStack(alignment: .leading){
                 
-                Text(merchant.name)
+                Text(self.merchant.name)
                     .font(.footnote)
                     .fontWeight(.bold)
                 
-                Text(merchant.street)
+                Text(self.merchant.street)
                     .font(.footnote)
                 
-                Text(merchant.cuisine)
+                Text(self.merchant.cuisine)
                     .font(.footnote)
                 
             }
@@ -57,22 +71,23 @@ struct ListingDetail: View {
                 
             VStack(alignment: .trailing){
                 
-                Text(price)
+                Text(self.price)
                     .font(.footnote)
                 
-                }.onAppear(perform: formatPrice)
+            }.onAppear(perform: self.formatPrice)
             }.padding()
             
             Spacer()
             
-            Text("\(merchant.offer)")
+            Text("\(self.offerStr)")
                 .font(.system(size: 100))
                 .fontWeight(.semibold)
             
             Spacer()
             
-            NavigationLink(destination: RedeemView(merchant: merchant, user: self.user!), tag: 1, selection: $selection) {
+            NavigationLink(destination: RedeemView(merchant: self.merchant, user: self.user!), tag: 1, selection: self.$selection) {
             Button(action: {
+                self.ans = true
                 self.redeemOffer()
                 }){
                     HStack {
@@ -86,18 +101,24 @@ struct ListingDetail: View {
                 }
             }
         }
-        .foregroundColor(.blue)
-            .navigationBarTitle(merchant.name)
+        .alert(isPresented: self.$showAlert, content: { self.alert })
+        .foregroundColor(.blue).navigationBarTitle(self.merchant.name)
+    }
     }
     
     func formatPrice(){
-        let largeNumber: Int = merchant.cost
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
-        guard let formattedNumber = numberFormatter.string(from: NSNumber(value: largeNumber)) else { return }
         
+        let largeNumber: Int = merchant.cost
+        if let formattedNumber = numberFormatter.string(from: NSNumber(value: largeNumber)) {
         price = formattedNumber
+        }
         
+        let largeNumber2: Int = merchant.offer
+        if let formattedNumber = numberFormatter.string(from: NSNumber(value: largeNumber2)) {
+        offerStr = formattedNumber
+        }
     }
     
     func redeemOffer(){
@@ -105,23 +126,32 @@ struct ListingDetail: View {
         let id = merchant.id
         let image = merchant.image
         let name = merchant.name
-        
+        let savings = merchant.offer + user!.savings
+        let offer = merchant.offer
         
         let docData: [String: Any] = [
             "name" : name,
-            "image" : image,
-            "id" : id
+            "image" : image
         ]
         
-        
-        selection = 1
+        if let uid = Auth.auth().currentUser?.uid {
+            session.redeemOffer(withUID: uid, fromMerchant: id, offer: offer, savings: savings, andData: docData) { (success) in
+            self.ans = false
+                if success {
+                    self.selection = 1
+                    self.refreshUserInfo = true
+                }else{
+                    self.showAlert.toggle()
+                }
+            }
+        }
     }
 }
 
 struct ListingDetail_Previews: PreviewProvider {
     static var previews: some View {
         ListingDetail(
-            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: [], code: "")
+            merchant: try! Merchant.init(id: "", city: "", offer: 0, cost: 0, state: "", street: "", zip: "", image: "", cuisine: "", name: "", rating: 0, hours: [], code: ""), refreshUserInfo: .constant(false)
         )
     }
 }

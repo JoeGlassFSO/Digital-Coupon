@@ -22,6 +22,7 @@ struct MerchantsView: View {
     @State var lastEncounteredIndex: Int = 0
     @State var selection: Int? = nil
     @State var filtered: Bool = false
+    @State var refreshUserInfo: Bool = false
     
     @State var selectedType: Int = 0
     @State var selectedStatus: Int = 0
@@ -36,7 +37,8 @@ struct MerchantsView: View {
                     
                     NavigationLink(destination: ListingDetail(
                         merchant: self.merchants[index],
-                        user: self.user
+                        user: self.user,
+                        refreshUserInfo: self.$refreshUserInfo
                         )
                     ){
                         ListingItem(
@@ -104,10 +106,11 @@ struct MerchantsView: View {
             }
         }
         
-        if user == nil{
-            if let id = Auth.auth().currentUser?.uid  {
+        if user == nil || refreshUserInfo{
+            if let id = Auth.auth().currentUser?.uid {
                 session.getUser(from: "users", withDocumentID: id) { (user) in
                     self.user = user
+                    self.refreshUserInfo = false
                 }
             }
         }
