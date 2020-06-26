@@ -63,49 +63,6 @@ struct LoginView: View {
             HStack{
                 Spacer()
 
-//                Button(action: {
-                
-//                }) {
-//                    HStack {
-//                        Image("fb")
-//                            .resizable()
-//                            .clipShape(Circle())
-//                            .padding(10)
-//                            .overlay(Circle().stroke(Color.black, lineWidth: 0.3))
-//                            .padding()
-//                            .frame(width: frameSize, height: frameSize)
-//                    }
-//                }
-                
-//                Button(action: {
-//
-//                }) {
-//                    HStack {
-//
-//                        Image("apple")
-//                            .resizable()
-//                            .clipShape(Circle())
-//                        .padding(10)
-//                            .overlay(Circle().stroke(Color.black, lineWidth: 0.3))
-//                            .padding()
-//                            .frame(width: frameSize, height: frameSize)
-//                    }
-//                }
-                
-//                Button(action: {
-//
-//                }) {
-//                    HStack {
-//
-//                        Image("gplus")
-//                            .resizable()
-//                            .clipShape(Circle())
-//                            .padding(10)
-//                            .overlay(Circle().stroke(Color.black, lineWidth: 0.3))
-//                            .padding()
-//                            .frame(width: frameSize, height: frameSize)
-//                    }
-//                }
                 
                 Spacer()
             }
@@ -169,6 +126,7 @@ struct LoginView: View {
 struct loginFb: UIViewRepresentable {
     
     @Binding var isLoggedIn: Bool
+    @ObservedObject var session = FirebaseSession()
     
     func makeCoordinator() -> loginFb.Coordinator {
         return loginFb.Coordinator(self)
@@ -205,11 +163,30 @@ struct loginFb: UIViewRepresentable {
                         return
                     }
                     self.parent.isLoggedIn = true
+                    
+                    let user = Auth.auth().currentUser
+                    let name = user?.displayName ?? ""
+                    let email = user?.email ?? ""
+                    let docData: [String: Any] = [
+                        "name" : name,
+                        "email" : email,
+                        "dob" : "",
+                        "country" : "",
+                        "city" : "",
+                        "street" : "",
+                        "state" : "",
+                        "savings" : 0
+                    ]
+                    
+                    if let uid = Auth.auth().currentUser?.uid {
+                    self.parent.session.createUser(withUID: uid, andData: docData)
+                    
                     print("success")
                 }
             }
         }
-        
+    }
+    
         func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
             try! Auth.auth().signOut()
         }

@@ -14,6 +14,7 @@ let loginKey = "loggedIn"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
+    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
       // ...
       if let error = error {
@@ -30,8 +31,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
                 print(error.localizedDescription)
               return
             }
+            let user = Auth.auth().currentUser
+            let name = user?.displayName ?? ""
+            let email = user?.email ?? ""
+            let docData: [String: Any] = [
+                "name" : name,
+                "email" : email,
+                "dob" : "",
+                "country" : "",
+                "city" : "",
+                "street" : "",
+                "state" : "",
+                "savings" : 0
+            ]
             
-            UserDefaults.standard.set(true, forKey: loginKey)
+            if let uid = Auth.auth().currentUser?.uid {
+                FirebaseSession().createUser(withUID: uid, andData: docData)
+                
+                UserDefaults.standard.set(true, forKey: loginKey)
+            }
         }
     }
 

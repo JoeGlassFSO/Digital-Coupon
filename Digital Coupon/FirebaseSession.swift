@@ -76,6 +76,7 @@ class FirebaseSession: ObservableObject{
                     if document.exists{
                         let visits = (document.get("visits") as! Int)
                         let saving = (document.get("savings") as! Int)
+                        
                         var fullDoc = docData
                         fullDoc.updateValue(visits + 1, forKey:"visits")
                         fullDoc.updateValue(saving + offer, forKey: "savings")
@@ -262,10 +263,11 @@ class FirebaseSession: ObservableObject{
                                 }
                             }
                         }
+                        
                         completion(objects)
                         self.lastSnap = querySnapshot!.documents.last
                     }catch{
-                        print(error)
+                        print("\(error)")
                     }
                 }
             }
