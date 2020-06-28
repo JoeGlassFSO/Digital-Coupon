@@ -48,7 +48,7 @@ struct ListingItem: View {
                     Text(merchant.cuisine)
                         .font(.footnote)
                     HStack{
-                        ForEach (0..<merchant.rating) { _ in
+                        ForEach((0..<merchant.rating), id: \.self) { _ in
                         Image(systemName: "star.fill")
                             .font(.system(size: 10))
                         }

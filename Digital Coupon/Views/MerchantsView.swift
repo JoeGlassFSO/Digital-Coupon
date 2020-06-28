@@ -25,8 +25,8 @@ struct MerchantsView: View {
     @State var refreshUserInfo: Bool = false
     
     @State var selectedType: Int = 0
-    @State var selectedStatus: Int = 0
-    @State var selectedPrice: Int = 1
+    @State var selectedStatus: Int = 2
+    @State var selectedPrice: Int = 0
     @State var cuisineName: String = ""
     @State var user: DCUser?
     
@@ -80,25 +80,25 @@ struct MerchantsView: View {
     
     func fetch(){
         let by = ["offer", "rating"]
-        let openstatus = ["open", "closed"]
+        let openstatus = ["open", "closed", "all"]
         let prices = ["$", "$$", "$$$", "$$$$"]
         
-        if filtered{
+        if filtered {
             order = by[selectedType]
             status = openstatus[selectedStatus]
             
             switch prices[selectedPrice] {
             case "$$$$":
-                upper = 99999
-                lower = 10000
-            case "$$$":
                 upper = 9999
                 lower = 1000
-            case "$$":
+            case "$$$":
                 upper = 999
                 lower = 100
-            case "$":
+            case "$$":
                 upper = 99
+                lower = 10
+            case "$":
+                upper = 9
                 lower = 0
             default:
                 upper = 1000000
@@ -106,7 +106,7 @@ struct MerchantsView: View {
             }
         }
         
-        if user == nil || refreshUserInfo{
+        if user == nil || refreshUserInfo {
             if let id = Auth.auth().currentUser?.uid {
                 session.getUser(from: "users", withDocumentID: id) { (user) in
                     self.user = user
@@ -117,20 +117,14 @@ struct MerchantsView: View {
         
         session.getMerchants(from: "merchants", returning: Merchant.self, orderedBy: order, withUpper: upper, andLower: lower, andStatus: status, loadingMore: false, withCuisine: cuisineName) { (merchants) in
             self.merchants = merchants
-            
             self.ans = false
         }
     }
     
     private func getNextPageIfNecessary(encounteredIndex: Int) {
         
-        print("encountered index \(encounteredIndex)")
-        print("last encountered index \(lastEncounteredIndex)")
         guard lastEncounteredIndex < encounteredIndex else { return }
         guard encounteredIndex == merchants.count - 3 else { return }
-        print("encountered index \(encounteredIndex)")
-        print("last encountered index \(lastEncounteredIndex)")
-        print("")
         lastEncounteredIndex = encounteredIndex
         session.getMerchants(from: "merchants", returning: Merchant.self, orderedBy: order, withUpper: upper, andLower: lower, andStatus: status, loadingMore: true, withCuisine: cuisineName) { (merchants) in
             

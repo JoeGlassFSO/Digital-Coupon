@@ -18,14 +18,14 @@ struct SortView: View {
     @Binding var filtered: Bool
     @Binding var cuisineName: String
     var by = ["Offer", "Rating"]
-    var openstatus = ["Yes", "No"]
+    var openstatus = ["Yes", "No", "All"]
     var prices = ["$", "$$", "$$$", "$$$$"]
     
     var body: some View {
         
         VStack {
                 Picker("by type", selection: $selectedType) {
-                    ForEach(0 ..< by.count){
+                    ForEach((0 ..< by.count), id: \.self){
                         Text("\(self.by[$0])")
                     }
                 }
@@ -37,7 +37,7 @@ struct SortView: View {
                     .font(.title)
             
                         Picker("Prices", selection: $selectedPrice) {
-                            ForEach(0 ..< prices.count){
+                            ForEach((0 ..< prices.count), id: \.self){
                                 Text("\(self.prices[$0])")
                             }
                         }
@@ -49,7 +49,7 @@ struct SortView: View {
                             .font(.title)
             
                     Picker("open now", selection: $selectedStatus) {
-                        ForEach(0 ..< openstatus.count){
+                        ForEach((0 ..< openstatus.count), id: \.self){
                             Text("\(self.openstatus[$0])")
                         }
                     }

@@ -206,7 +206,7 @@ class FirebaseSession: ObservableObject{
         
         let firstRef = reference(to: collectionReference)
             .order(by: order, descending: true)
-            .limit(to: 9)
+            .limit(to: 15)
         
         let date = Date()
         var calendar = Calendar.current
